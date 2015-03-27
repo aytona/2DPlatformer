@@ -72,6 +72,11 @@ public class PlatformerCharacterController : MonoBehaviour
 			this.animator.SetTrigger("Death");
 			this.rigidbody2D.isKinematic = true;
 		}
+
+		if (other.gameObject.tag == "Levitation")
+		{
+			this.gameObject.rigidbody2D.gravityScale = -0.5f;
+		}
 	}
 
 	void OnTriggerExit2D (Collider2D other)
@@ -79,6 +84,11 @@ public class PlatformerCharacterController : MonoBehaviour
 		if (other.CompareTag("MovingPlatform"))
 		{
 			this.transform.parent = null;
+		}
+
+		if (other.gameObject.tag == "Levitation")
+		{
+			this.gameObject.rigidbody2D.gravityScale = 1;
 		}
 	}
 
