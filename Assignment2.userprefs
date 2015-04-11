@@ -1,9 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MyAssets\Scripts\Player\PlatformerCharacterController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MyAssets\Scripts\Level\Bomb.cs">
     <Files>
-      <File FileName="Assets\MyAssets\Scripts\Player\PlatformerCharacterController.cs" Line="88" Column="1" />
-      <File FileName="Assets\MyAssets\Scripts\Level\MovingPlatform.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyAssets\Scripts\Level\Bomb.cs" Line="14" Column="46" />
+      <File FileName="Assets\MyAssets\Scripts\Utilities\CanvasButtons.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyAssets\Scripts\Player\AnimationEvents.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\Christopher\Desktop\Assignment2\Assets\MyAssets\Scripts\Player\PlatformerCharacterController.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyAssets\Scripts\Utilities\Data.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyAssets\Scripts\Utilities\HUD.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyAssets\Scripts\Level\Turret.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

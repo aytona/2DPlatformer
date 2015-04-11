@@ -20,6 +20,7 @@ public class MovingPlatform : MonoBehaviour
 		}
 		if (other.tag == "DeActivation")
 		{
+			AudioManager.Instance.PlayImpactClip();
 			this.gameObject.particleSystem.Play();
 			this.gameObject.collider2D.enabled = false;
 			this.gameObject.renderer.enabled = false;

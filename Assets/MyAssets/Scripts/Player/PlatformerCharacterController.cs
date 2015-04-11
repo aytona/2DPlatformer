@@ -44,6 +44,45 @@ public class PlatformerCharacterController : MonoBehaviour
 	/// </summary>
 	[SerializeField] private Vector2 direction = Vector2.zero;
 
+	/// <summary>
+	/// The impact tolerance of the player before dying.
+	/// </summary>
+	[SerializeField] private float impactTolerance = 10f;
+
+	/// <summary>
+	/// Checks if the players has the rocket.
+	/// </summary>
+	[SerializeField] private bool hasRocket = false;
+
+	/// <summary>
+	/// Checks if the player picked up the bombs.
+	/// </summary>
+	[SerializeField] private bool hasBomb = false;
+
+	/// <summary>
+	/// The bomb prefab.
+	/// </summary>
+	[SerializeField] private GameObject bombPrefab = null;
+
+	/// <summary>
+	/// The rocket force.
+	/// </summary>
+	[SerializeField] private float rocketForce = 10f;
+
+	/// <summary>
+	/// The bomb spawn point.
+	/// </summary>
+	[SerializeField] private Transform bombSpawn = null;
+
+	/// <summary>
+	/// The player is running.
+	/// </summary>
+	[SerializeField] private bool isRunning = false;
+
+	/// <summary>
+	/// The bomb count.
+	/// </summary>
+	[SerializeField] private int bombCount = 0;
 
 	#region MonoBehaviour
 
@@ -58,6 +97,7 @@ public class PlatformerCharacterController : MonoBehaviour
 	{
 		ProcessInput();
 		CheckGround();
+
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
@@ -67,15 +107,27 @@ public class PlatformerCharacterController : MonoBehaviour
 			this.transform.parent = other.transform;
 		}
 
-		if (other.gameObject.tag == "FirePit")
+		if (other.gameObject.tag == "FirePit" || other.gameObject.tag == "Bullet")
 		{
-			this.animator.SetTrigger("Death");
-			this.rigidbody2D.isKinematic = true;
+			DeathAnim();
 		}
 
 		if (other.gameObject.tag == "Levitation")
 		{
 			this.gameObject.rigidbody2D.gravityScale = -0.5f;
+		}
+
+		if (other.gameObject.tag == "Rocket")
+		{
+			hasRocket = true;
+		}
+
+		if (other.gameObject.tag == "BombCrate")
+		{
+			AudioManager.Instance.PlayBompPickUpClip();
+			Data.Instance.Bomb = 5;
+			bombCount = 5;
+			hasBomb = true;
 		}
 	}
 
@@ -92,6 +144,21 @@ public class PlatformerCharacterController : MonoBehaviour
 		}
 	}
 
+	void OnCollisionEnter2D (Collision2D other)
+	{
+		if (other.relativeVelocity.magnitude > impactTolerance)
+		{
+			DeathAnim();
+		}
+	}
+
+	void DeathAnim()
+	{
+		this.animator.SetTrigger("Death");
+		this.rigidbody2D.isKinematic = true;
+		AudioManager.Instance.PlayPlayerDeathClip();
+	}
+
 	#endregion MonoBehaviour
 
 
@@ -101,6 +168,8 @@ public class PlatformerCharacterController : MonoBehaviour
 	{
 		ProcessWalking();
 		ProcessJump();
+		ProcessRocket();
+		ProcessBomb();
 	}
 
 	/// <summary>
@@ -125,9 +194,35 @@ public class PlatformerCharacterController : MonoBehaviour
 	/// </summary>
 	private void ProcessJump ()
 	{
-		if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
+		if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true && hasRocket == false)
 		{
 			this.direction.y = 1;
+		}
+	}
+
+	/// <summary>
+	/// Processes the input for rocket.
+	/// </summary>
+	private void ProcessRocket()
+	{
+		if (Input.GetButton("Vertical") && hasRocket == true)
+		{
+			Vector2 globalDirection = this.transform.TransformDirection(Vector2.up);
+			this.gameObject.rigidbody2D.AddForce(globalDirection * rocketForce);
+		}
+	}
+
+	private void ProcessBomb()
+	{
+		if (Input.GetKeyDown(KeyCode.B) && hasBomb == true && bombCount > 0)
+		{
+			GameObject bomb = Instantiate(this.bombPrefab) as GameObject;
+			bomb.transform.position = this.bombSpawn.transform.position;
+			bomb.transform.rotation = this.bombSpawn.transform.rotation;
+
+			bombCount--;
+			Data.Instance.Bomb--;
+			AudioManager.Instance.PlayFireClip();
 		}
 	}
 
@@ -170,6 +265,14 @@ public class PlatformerCharacterController : MonoBehaviour
 			newVelocity.x = multiplier * maxWalkSpeed;
 			this.rigidbody2D.velocity = newVelocity;
 		}
+		
+		if (Mathf.Abs(horizontalSpeed) > 1.5)
+		{
+			isRunning = true;
+		}
+		else{
+			isRunning = false;
+		}
 
 		this.animator.SetFloat("HorizontalSpeed", horizontalSpeed);
 	}
@@ -185,6 +288,16 @@ public class PlatformerCharacterController : MonoBehaviour
 			this.animator.SetTrigger("Jumping");
 			this.rigidbody2D.AddForce(Vector2.up * this.jumpForce);
 			direction.y = 0;
+			// Plays Roll Clip if the player is running
+			// Else play normal Jump Clip
+			if (isRunning == true)
+			{
+				AudioManager.Instance.PlayRollClip();
+			}
+			else if (isRunning == false)
+			{
+				AudioManager.Instance.PlayJumpClip();
+			}
 		}
 	}
 
