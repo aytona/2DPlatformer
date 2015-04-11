@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{408E2E6F-7CFC-5ABD-33D3-EA84C056C44C}</ProjectGuid>
+	<ProjectGuid>{F6DD79E7-ECB5-C3BA-8C1C-3F12E25AC3E5}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -52,6 +52,7 @@
      <Compile Include="Assets\MyAssets\Scripts\Level\Door.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Level\MovingPlatform.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Level\Turret.cs" />
+     <Compile Include="Assets\MyAssets\Scripts\Level\TurretDeath.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Player\AnimationEvents.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Player\PlatformerCharacterController.cs" />
      <Compile Include="Assets\MyAssets\Scripts\Utilities\AudioManager.cs" />
