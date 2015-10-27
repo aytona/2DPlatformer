@@ -10,7 +10,7 @@ public class BossTriggers : MonoBehaviour {
 
 	void Awake()
 	{
-		this.gameObject.particleSystem.enableEmission = false;
+		this.gameObject.GetComponent<ParticleSystem>().enableEmission = false;
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
@@ -19,8 +19,8 @@ public class BossTriggers : MonoBehaviour {
 		if (other.gameObject.tag == "Bomb")
 		{
 			turretBody.SetActive(false);
-			this.gameObject.particleSystem.enableEmission = true;
-			this.gameObject.particleSystem.Play ();
+			this.gameObject.GetComponent<ParticleSystem>().enableEmission = true;
+			this.gameObject.GetComponent<ParticleSystem>().Play ();
 			AudioManager.Instance.PlayBossDeathClip();
 		}
 	}

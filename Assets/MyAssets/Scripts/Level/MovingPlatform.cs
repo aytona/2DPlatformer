@@ -9,7 +9,7 @@ public class MovingPlatform : MonoBehaviour
 
 	void Awake()
 	{
-		this.gameObject.particleSystem.Stop ();
+		this.gameObject.GetComponent<ParticleSystem>().Stop ();
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
@@ -21,10 +21,10 @@ public class MovingPlatform : MonoBehaviour
 		if (other.tag == "DeActivation")
 		{
 			AudioManager.Instance.PlayImpactClip();
-			this.gameObject.particleSystem.Play();
-			this.gameObject.collider2D.enabled = false;
-			this.gameObject.renderer.enabled = false;
-			this.gameObject.particleSystem.enableEmission = true;
+			this.gameObject.GetComponent<ParticleSystem>().Play();
+			this.gameObject.GetComponent<Collider2D>().enabled = false;
+			this.gameObject.GetComponent<Renderer>().enabled = false;
+			this.gameObject.GetComponent<ParticleSystem>().enableEmission = true;
 			Destroy(other.gameObject);
 			isDestroyed = true;
 			speed = 0;

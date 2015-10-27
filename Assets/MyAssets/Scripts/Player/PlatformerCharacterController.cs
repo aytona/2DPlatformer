@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlatformerCharacterController : MonoBehaviour 
 {
+    private Rigidbody2D rb2d;
+
 	/// <summary>
 	/// The animator reference.
 	/// </summary>
@@ -86,6 +88,11 @@ public class PlatformerCharacterController : MonoBehaviour
 
 	#region MonoBehaviour
 
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
 	void FixedUpdate ()
 	{
 		OrientCharacter(this.direction);
@@ -114,7 +121,7 @@ public class PlatformerCharacterController : MonoBehaviour
 
 		if (other.gameObject.tag == "Levitation")
 		{
-			this.gameObject.rigidbody2D.gravityScale = -0.5f;
+			rb2d.gravityScale = -0.5f;
 		}
 
 		if (other.gameObject.tag == "Rocket")
@@ -140,7 +147,7 @@ public class PlatformerCharacterController : MonoBehaviour
 
 		if (other.gameObject.tag == "Levitation")
 		{
-			this.gameObject.rigidbody2D.gravityScale = 1;
+			rb2d.gravityScale = 1;
 		}
 	}
 
@@ -155,7 +162,7 @@ public class PlatformerCharacterController : MonoBehaviour
 	void DeathAnim()
 	{
 		this.animator.SetTrigger("Death");
-		this.rigidbody2D.isKinematic = true;
+		rb2d.isKinematic = true;
 		AudioManager.Instance.PlayPlayerDeathClip();
 	}
 
@@ -208,7 +215,7 @@ public class PlatformerCharacterController : MonoBehaviour
 		if (Input.GetButton("Vertical") && hasRocket == true)
 		{
 			Vector2 globalDirection = this.transform.TransformDirection(Vector2.up);
-			this.gameObject.rigidbody2D.AddForce(globalDirection * rocketForce);
+			rb2d.AddForce(globalDirection * rocketForce);
 		}
 	}
 
@@ -255,15 +262,15 @@ public class PlatformerCharacterController : MonoBehaviour
 	/// <param name="direction">Direction.</param>
 	private void Walk (Vector2 direction)
 	{
-		this.rigidbody2D.AddForce(direction * this.walkForce);
-		float horizontalSpeed = Mathf.Abs(this.rigidbody2D.velocity.x);
+		rb2d.AddForce(direction * this.walkForce);
+		float horizontalSpeed = Mathf.Abs(rb2d.velocity.x);
 
 		if (Mathf.Abs(horizontalSpeed) > this.maxWalkSpeed)
 		{
-			Vector2 newVelocity = this.rigidbody2D.velocity;
-			float multiplier = (this.rigidbody2D.velocity.x > 0) ? 1 : -1;
+			Vector2 newVelocity = rb2d.velocity;
+			float multiplier = (rb2d.velocity.x > 0) ? 1 : -1;
 			newVelocity.x = multiplier * maxWalkSpeed;
-			this.rigidbody2D.velocity = newVelocity;
+			rb2d.velocity = newVelocity;
 		}
 		
 		if (Mathf.Abs(horizontalSpeed) > 1.5)
@@ -286,7 +293,7 @@ public class PlatformerCharacterController : MonoBehaviour
 		if (direction.y > 0)
 		{
 			this.animator.SetTrigger("Jumping");
-			this.rigidbody2D.AddForce(Vector2.up * this.jumpForce);
+			rb2d.AddForce(Vector2.up * this.jumpForce);
 			direction.y = 0;
 			// Plays Roll Clip if the player is running
 			// Else play normal Jump Clip

@@ -55,13 +55,13 @@ public class RendererSortingLayerInspectorGUI : Editor
 		this.renderers = new Renderer[particleSystemsCount];
 		for (int i = 0; i < particleSystemsCount; i++)
 		{
-			renderers[i] = particleSystems[i].renderer;	
+			renderers[i] = particleSystems[i].GetComponent<Renderer>();	
 		}
 
 		// Initialize the popupMenuIndex with the current Sort Layer name.	
 		for (int i = 0; i < sortingLayersCount; i++)
 		{
-			if (this.sortingLayerNames[i] == this.particleSystems[0].renderer.sortingLayerName)
+			if (this.sortingLayerNames[i] == this.particleSystems[0].GetComponent<Renderer>().sortingLayerName)
 			{
 				this.popupMenuIndex = i;
 			}

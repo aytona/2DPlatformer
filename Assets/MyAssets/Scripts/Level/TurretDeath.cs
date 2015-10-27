@@ -7,7 +7,7 @@ public class TurretDeath : MonoBehaviour {
 		if (other.gameObject.tag == "Bomb")
 		{
 			AudioManager.Instance.PlayBossDeathClip();
-			gameObject.collider2D.enabled = false;
+			gameObject.GetComponent<Collider2D>().enabled = false;
 		}
 	}
 }
